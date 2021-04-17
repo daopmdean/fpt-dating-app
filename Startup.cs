@@ -68,6 +68,7 @@ namespace DatingApp.API
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -115,14 +116,27 @@ namespace DatingApp.API
                 });
             }
 
-            // app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            //app.UseCors(x => x
+            //    .AllowAnyHeader()
+            //    .AllowAnyMethod()
+            //    .WithOrigins("http://localhost:4200/")
+            //    .AllowCredentials());
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:4200/")
+                //.SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials);
+
+
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
